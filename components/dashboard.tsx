@@ -4,9 +4,14 @@ import { useState, useEffect } from "react"
 
 import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
-import { Dumbbell, Flame, Calendar, Heart, Lightbulb, Sparkles } from "lucide-react"
+import { Dumbbell, Flame, Calendar, Heart, Lightbulb, Sparkles, Sun, CloudRain, Cloud } from "lucide-react"
 import { WeeklyChart } from "@/components/weekly-chart"
+import { MoodChart } from "@/components/mood-chart"
+import { ConsistencyChart } from "@/components/consistency-chart"
+import { WeatherWidget } from "@/components/weather-widget"
 import { useFitness } from "@/components/fitness-context"
+import { type WeatherType } from "@/lib/data"
+import { cn } from "@/lib/utils"
 
 interface DashboardProps {
   onOpenLogger: () => void
@@ -18,14 +23,16 @@ export function Dashboard({ onOpenLogger }: DashboardProps) {
     totalWorkouts,
     thisWeekWorkouts,
     favoriteExercise,
-    getSuggestion
+    getSuggestion,
+    weather,
+    setWeather
   } = useFitness()
 
   const [suggestion, setSuggestion] = useState("")
 
   useEffect(() => {
     setSuggestion(getSuggestion())
-  }, [getSuggestion])
+  }, [getSuggestion, weather]) // Re-run when weather changes
 
   return (
     <div className="space-y-6">
@@ -86,26 +93,39 @@ export function Dashboard({ onOpenLogger }: DashboardProps) {
         <CardContent className="p-4">
           <h3 className="text-sm font-semibold text-white mb-4 flex items-center gap-2">
             <Calendar className="w-4 h-4 text-[#00D9FF]" />
-            This Week
+            Weekly Activity
           </h3>
           <WeeklyChart />
         </CardContent>
       </Card>
 
+      {/* Advanced Analytics */}
+      <div className="grid grid-cols-1 gap-4">
+        <MoodChart />
+        <ConsistencyChart />
+      </div>
+
       {/* Smart Suggestion */}
-      <Card className="glass border-[#39FF14]/20 glow-green">
-        <CardContent className="p-4">
-          <div className="flex items-start gap-3">
-            <div className="p-2 rounded-lg bg-[#39FF14]/10">
-              <Lightbulb className="w-5 h-5 text-[#39FF14]" />
+      <div className="space-y-4">
+        <WeatherWidget onWeatherChange={setWeather} />
+
+        <Card className="glass border-[#39FF14]/20 glow-green transition-all duration-500">
+          <CardContent className="p-4">
+            <div className="flex items-center gap-2 mb-3">
+              <div className="p-2 rounded-lg bg-[#39FF14]/10">
+                <Lightbulb className="w-5 h-5 text-[#39FF14]" />
+              </div>
+              <span className="text-sm font-medium text-[#39FF14]">Smart Suggestion</span>
             </div>
-            <div>
-              <p className="text-sm text-muted-foreground">Based on the time, try:</p>
-              <p className="text-lg font-semibold text-white">{suggestion}</p>
+
+            <div className="pl-1">
+              <p className="text-lg font-semibold text-white animate-in fade-in slide-in-from-bottom-2 duration-500 key={suggestion}">
+                {suggestion}
+              </p>
             </div>
-          </div>
-        </CardContent>
-      </Card>
+          </CardContent>
+        </Card>
+      </div>
 
       {/* Motivational Quote */}
       <div className="text-center py-4">

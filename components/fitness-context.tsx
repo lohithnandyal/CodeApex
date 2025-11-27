@@ -2,7 +2,19 @@
 
 import React, { createContext, useContext, useEffect, useState } from "react"
 import { useLocalStorage } from "@/hooks/use-local-storage"
-import { type Workout, sampleWorkouts, type ExerciseType, type MoodType } from "@/lib/data"
+import { type Workout, sampleWorkouts, type ExerciseType, type MoodType, getWorkoutSuggestion, type WeatherType } from "@/lib/data"
+
+export interface HydrationLog {
+    id: string
+    amount: number // in ml
+    date: string
+}
+
+export interface StepLog {
+    id: string
+    count: number
+    date: string
+}
 
 interface FitnessContextType {
     workouts: Workout[]
@@ -13,12 +25,19 @@ interface FitnessContextType {
     totalWorkouts: number
     thisWeekWorkouts: number
     favoriteExercise: string
+    weather: WeatherType
+    setWeather: (weather: WeatherType) => void
+    hydrationLogs: HydrationLog[]
+    stepLogs: StepLog[]
+    addHydrationLog: (amount: number) => void
+    addStepLog: (count: number) => void
 }
 
 const FitnessContext = createContext<FitnessContextType | undefined>(undefined)
 
 export function FitnessProvider({ children }: { children: React.ReactNode }) {
     const [workouts, setWorkouts] = useLocalStorage<Workout[]>("fit-track-workouts", [])
+    const [weather, setWeather] = useState<WeatherType>("Sunny")
     const [isInitialized, setIsInitialized] = useState(false)
 
     // Initialize with sample data if empty on first load
@@ -32,6 +51,9 @@ export function FitnessProvider({ children }: { children: React.ReactNode }) {
         }
     }, [isInitialized, setWorkouts])
 
+    const [hydrationLogs, setHydrationLogs] = useLocalStorage<HydrationLog[]>("fit-track-hydration", [])
+    const [stepLogs, setStepLogs] = useLocalStorage<StepLog[]>("fit-track-steps", [])
+
     const addWorkout = (workout: Omit<Workout, "id" | "date">) => {
         const newWorkout: Workout = {
             ...workout,
@@ -39,6 +61,24 @@ export function FitnessProvider({ children }: { children: React.ReactNode }) {
             date: new Date().toISOString(),
         }
         setWorkouts([newWorkout, ...workouts])
+    }
+
+    const addHydrationLog = (amount: number) => {
+        const newLog: HydrationLog = {
+            id: Date.now().toString(),
+            amount,
+            date: new Date().toISOString(),
+        }
+        setHydrationLogs([newLog, ...hydrationLogs])
+    }
+
+    const addStepLog = (count: number) => {
+        const newLog: StepLog = {
+            id: Date.now().toString(),
+            count,
+            date: new Date().toISOString(),
+        }
+        setStepLogs([newLog, ...stepLogs])
     }
 
     const deleteWorkout = (id: string) => {
@@ -72,9 +112,8 @@ export function FitnessProvider({ children }: { children: React.ReactNode }) {
 
     const getSuggestion = () => {
         const hour = new Date().getHours()
-        if (hour < 12) return "Morning Energizer"
-        if (hour < 17) return "Afternoon Power Session"
-        return "Evening Relaxation Yoga"
+        // We can pass a default mood or track it in context later. For now, undefined mood.
+        return getWorkoutSuggestion(hour, undefined, weather)
     }
 
     return (
@@ -88,6 +127,12 @@ export function FitnessProvider({ children }: { children: React.ReactNode }) {
                 totalWorkouts,
                 thisWeekWorkouts,
                 favoriteExercise,
+                weather,
+                setWeather,
+                hydrationLogs,
+                stepLogs,
+                addHydrationLog,
+                addStepLog
             }}
         >
             {children}

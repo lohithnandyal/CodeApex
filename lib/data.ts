@@ -70,13 +70,34 @@ export const exerciseIcons: Record<ExerciseType, string> = {
   Custom: "⭐",
 }
 
-export function getWorkoutSuggestion(hour: number, mood?: MoodType): string {
+export type WeatherType = "Sunny" | "Rainy" | "Cloudy" | "Indoors"
+
+export function getWorkoutSuggestion(hour: number, mood?: MoodType, weather?: WeatherType): string {
+  // Weather-based overrides (High Priority)
+  if (weather === "Rainy") {
+    if (mood === "⚡ Energetic") return "Indoor HIIT Blast"
+    return "Cozy Home Yoga"
+  }
+
+  if (weather === "Indoors") {
+    return "Living Room Strength"
+  }
+
+  if (weather === "Sunny") {
+    if (hour < 10) return "Morning Sunshine Run"
+    if (hour > 17) return "Sunset Park Walk"
+    return "Outdoor Power Cardio"
+  }
+
+  // Mood-based suggestions
   if (mood === "😰 Stressed" || mood === "😟 Anxious") {
     return "Calming Yoga Flow"
   }
   if (mood === "😴 Tired") {
     return "Light Walking"
   }
+
+  // Time-based defaults
   if (hour < 10) return "Morning Energizer HIIT"
   if (hour < 14) return "Lunch Break Power Walk"
   if (hour < 18) return "Afternoon Strength Session"
