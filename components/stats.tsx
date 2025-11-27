@@ -73,6 +73,52 @@ export function Stats() {
         </div>
       </div>
 
+      {/* Exercise Breakdown Chart */}
+      <Card className="glass border-[#00D9FF]/20 overflow-hidden">
+        <CardHeader className="pb-2">
+          <CardTitle className="text-lg font-bold text-white flex items-center gap-2">
+            <TrendingUp className="w-5 h-5 text-[#00D9FF]" />
+            Exercise Breakdown
+          </CardTitle>
+        </CardHeader>
+        <CardContent className="p-4">
+          <div className="h-[250px] w-full">
+            <ResponsiveContainer width="100%" height="100%">
+              <PieChart>
+                <Pie
+                  data={pieData}
+                  cx="50%"
+                  cy="50%"
+                  innerRadius={60}
+                  outerRadius={80}
+                  paddingAngle={5}
+                  dataKey="value"
+                  stroke="none"
+                >
+                  {pieData.map((entry, index) => (
+                    <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                  ))}
+                </Pie>
+                <Tooltip content={<CustomTooltip />} />
+                <Legend
+                  verticalAlign="bottom"
+                  height={36}
+                  iconType="circle"
+                  formatter={(value) => <span className="text-xs text-muted-foreground ml-1">{value}</span>}
+                />
+              </PieChart>
+            </ResponsiveContainer>
+          </div>
+
+          {/* Empty State if no data */}
+          {pieData.length === 0 && (
+            <div className="absolute inset-0 flex items-center justify-center bg-black/40 backdrop-blur-sm z-10">
+              <p className="text-muted-foreground text-sm">No workout data yet</p>
+            </div>
+          )}
+        </CardContent>
+      </Card>
+
       {/* Main Stats Grid */}
       <div className="grid grid-cols-2 gap-4">
         <Card className="glass border-[#00D9FF]/20 glow-blue overflow-hidden relative group">
@@ -153,52 +199,6 @@ export function Stats() {
           </CardContent>
         </Card>
       </div>
-
-      {/* Exercise Breakdown Chart */}
-      <Card className="glass border-[#00D9FF]/20 overflow-hidden">
-        <CardHeader className="pb-2">
-          <CardTitle className="text-lg font-bold text-white flex items-center gap-2">
-            <TrendingUp className="w-5 h-5 text-[#00D9FF]" />
-            Exercise Breakdown
-          </CardTitle>
-        </CardHeader>
-        <CardContent className="p-4">
-          <div className="h-[250px] w-full">
-            <ResponsiveContainer width="100%" height="100%">
-              <PieChart>
-                <Pie
-                  data={pieData}
-                  cx="50%"
-                  cy="50%"
-                  innerRadius={60}
-                  outerRadius={80}
-                  paddingAngle={5}
-                  dataKey="value"
-                  stroke="none"
-                >
-                  {pieData.map((entry, index) => (
-                    <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-                  ))}
-                </Pie>
-                <Tooltip content={<CustomTooltip />} />
-                <Legend
-                  verticalAlign="bottom"
-                  height={36}
-                  iconType="circle"
-                  formatter={(value) => <span className="text-xs text-muted-foreground ml-1">{value}</span>}
-                />
-              </PieChart>
-            </ResponsiveContainer>
-          </div>
-
-          {/* Empty State if no data */}
-          {pieData.length === 0 && (
-            <div className="absolute inset-0 flex items-center justify-center bg-black/40 backdrop-blur-sm z-10">
-              <p className="text-muted-foreground text-sm">No workout data yet</p>
-            </div>
-          )}
-        </CardContent>
-      </Card>
     </div>
   )
 }

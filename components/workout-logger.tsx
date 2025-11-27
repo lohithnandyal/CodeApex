@@ -116,12 +116,7 @@ export function WorkoutLogger({ open, onClose, initialValues }: WorkoutLoggerPro
 
       <Dialog open={open && !showCelebration} onOpenChange={onClose}>
         <DialogContent className="glass border-[#00D9FF]/30 glow-blue max-w-md mx-4 rounded-2xl max-h-[90vh] overflow-y-auto">
-          <button
-            onClick={onClose}
-            className="absolute right-4 top-4 p-1 rounded-full hover:bg-white/10 transition-colors"
-          >
-            <X className="w-5 h-5 text-muted-foreground" />
-          </button>
+
 
           <DialogHeader>
             <DialogTitle className="text-xl font-bold text-white flex items-center gap-2">

@@ -16,41 +16,31 @@ interface WorkoutTimerProps {
 }
 
 const QUOTES = [
-    "Don't stop when you're tired. Stop when you're done.",
-    "Your body can stand almost anything. It's your mind that you have to convince.",
-    "The only bad workout is the one that didn't happen.",
-    "Sweat is just fat crying.",
-    "Motivation is what gets you started. Habit is what keeps you going.",
-    "A one-hour workout is 4% of your day. No excuses.",
-    "Sweat is your body's way of showing progress.",
-    "Pain is temporary, but pride is forever.",
-    "The only bad workout is the one you didn't do.",
-    "Results happen over time, not overnight. Work hard, stay consistent.",
-    "Strong today, stronger tomorrow.",
-    "Working out is not about being better than someone else. It's about being better than you used to be.",
-    "Lift heavy, live light.",
-    "Make your workout your daily therapy.",
-    "The gym is my playground, and the weights are my toys. – Lee Priest",
-    "It never gets easier, you just get stronger.",
-    "Push yourself because no one else is going to do it for you.",
-    "You don't find willpower; you create it.",
-    "Obstacles are opportunities in disguise. Embrace the challenge.",
-    "The harder the battle, the sweeter the victory. – Les Brown",
-    "Challenge yourself to overcome, and the finish line will be within reach.",
-    "Your strength doesn't come from what you can do; it comes from overcoming the things you once thought you couldn't.",
-    "When you feel like quitting, remember why you started.",
-    "Every accomplishment starts with the decision to try. – John F. Kennedy",
-    "In every race, there's a moment when you think you can't go any further. That's when you dig deep and find out what you're really made of. – Steve Prefontaine",
-    "Every obstacle is an opportunity to prove your strength.",
-    "A Viking does not fear the storm; he becomes it.",
-    "A warrior's strength is not measured by his sword, but by his spirit.",
-    "With each battle, we carve our names into the sagas of history.",
-    "In the heat of battle, you find your true self.",
-    "The path to glory is paved with courage and sacrifice.",
-    "The true measure of a Viking is his ability to rise after each fall.",
-    "Embrace the struggle, for it shapes the warrior within.",
-    "In the heart of every Viking beats the rhythm of the fjords.",
-    "The brave may not live forever, but the cautious do not live at all. – Richard Branson",
+    "Stronger every day.",
+    "Earn your body.",
+    "Train insane or remain the same.",
+    "Excuses don't burn calories.",
+    "Sore today, strong tomorrow.",
+    "Beast mode: activated.",
+    "Sweat now, shine later.",
+    "Mind over matter.",
+    "Champions train, losers complain.",
+    "No pain, no gain.",
+    "Discipline beats motivation.",
+    "Commit to be fit.",
+    "Progress, not perfection.",
+    "Rise and grind.",
+    "Train like a beast, look like a beauty.",
+    "Hustle for the muscle.",
+    "Fitness is not a destination, it's a journey.",
+    "Do it for yourself.",
+    "Strength doesn't come from comfort.",
+    "Your only limit is you.",
+    "Conquer from within.",
+    "Train hard, win easy.",
+    "Defeat is not an option.",
+    "Winners never quit.",
+    "Success starts with self-discipline.",
 ]
 
 export function WorkoutTimer({ open, onClose, onComplete, initialDuration, workoutName }: WorkoutTimerProps) {
@@ -114,7 +104,7 @@ export function WorkoutTimer({ open, onClose, onComplete, initialDuration, worko
 
     return (
         <Dialog open={open} onOpenChange={onClose}>
-            <DialogContent className="glass border-[#00D9FF]/30 glow-blue max-w-md mx-4 rounded-2xl p-0 overflow-hidden">
+            <DialogContent showCloseButton={false} className="glass border-[#00D9FF]/30 glow-blue max-w-md mx-4 rounded-2xl p-0 overflow-hidden">
                 <div className="p-6 space-y-6 relative">
                     {/* Header */}
                     <div className="flex items-center justify-between">
